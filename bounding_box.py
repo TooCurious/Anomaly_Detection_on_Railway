@@ -3,11 +3,11 @@ import tifffile
 import numpy as np
 import cv2
 
-# Пример использования функции find_rectangles
+
 image_path = "C:/Users/User/Desktop/RZD/pythonProject/output/1/anomaly_maps/test/anomaly/1837_7.tiff"
 
 image = tifffile.imread(image_path)
-# Преобразование изображения в массив numpy
+
 image_array = np.asarray(image)
 
 
