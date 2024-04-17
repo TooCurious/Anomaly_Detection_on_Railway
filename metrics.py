@@ -117,10 +117,6 @@ def PL(detections: list, ground_truths: list, iou_threshold: float = 0.3):
 
         num_gts = len(ground_truth_img)
 
-        # на данный момент у нас есть бокс с одной детекцией detection[train_idx,class_pred,prob_score,x1,y1,x2,y2]
-        # список всех боксов для этого изображения ground_truth_img
-        # общее количесво объектов на изображении подлежащих обнаружению num_gts
-
         best_iou = 0
         best_gt_idx = 0
         for idx, gt in enumerate(ground_truth_img):
