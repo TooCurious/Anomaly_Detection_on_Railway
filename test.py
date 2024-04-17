@@ -81,7 +81,6 @@ def inference():
     autoencoder = get_autoencoder(out_channels)
     autoencoder.load_state_dict(state_dict_autoencoder)
 
-    # teacher frozen
     teacher.eval()
     student.train()
     autoencoder.train()
@@ -164,7 +163,6 @@ def test(test_set, teacher, student, autoencoder, teacher_mean, teacher_std,
         cv_array = map_combined_for_write.astype(np.uint8)
         _, thresh = cv2.threshold(cv_array, 254, 255, 0)
 
-        # Найдите контуры в изображении
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         split_path = path.split('\\')
@@ -176,7 +174,6 @@ def test(test_set, teacher, student, autoencoder, teacher_mean, teacher_std,
 
         contour_properties = []
 
-        # Для каждого контура найдите координаты Xmax, Xmin, Ymax и Ymin
         for contour in contours:
             x, y, width, height = cv2.boundingRect(contour)
             # подгоняем рамки
@@ -190,7 +187,6 @@ def test(test_set, teacher, student, autoencoder, teacher_mean, teacher_std,
             Ymin = y
             contour_properties.append((Xmax, Xmin, Ymax, Ymin))
 
-            # Нанесите прямоугольники на изображение
             cv2.rectangle(image, (Xmin, Ymin), (Xmax, Ymax), (0, 0, 255), 2)
 
         if test_bound_output_dir is not None:
