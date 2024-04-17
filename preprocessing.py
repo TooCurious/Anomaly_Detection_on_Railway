@@ -22,7 +22,7 @@ def line_search(path_file: str):
     y1_0 = []
     x2_0 = []
     y2_0 = []
-    # Если есть обнаруженные линии
+    
     if lines is not None:
         for line in lines:
             rho, theta = line[0]
@@ -31,7 +31,7 @@ def line_search(path_file: str):
             b = np.sin(theta)
             x0 = a * rho
             y0 = b * rho
-            # Округление координат и перевод в целые числа
+
             x1 = int(x0 + 1000 * (-b))
             y1 = int(y0 + 1000 * (a))
             x2 = int(x0 - 1000 * (-b))
@@ -45,7 +45,6 @@ def line_search(path_file: str):
 
 
 def reflect_image(image, line_start, line_end):
-    # Находим уравнение прямой, проходящей через две точки
     x1, y1 = line_start
     x2, y2 = line_end
 
@@ -64,31 +63,21 @@ def reflect_image(image, line_start, line_end):
             # Находим вектор от точки до начальной точки прямой
             vector_x = x - x1
             vector_y = y - y1
-            # Находим скалярное произведение вектора от точки до начальной точки прямой
-            # и вектора, перпендикулярного прямой
             scalar_product = vector_x * perpendicular_dx + vector_y * perpendicular_dy
-            # Нормируем скалярное произведение для получения расстояния от точки до прямой
             distance = scalar_product / np.sqrt(perpendicular_dx ** 2 + perpendicular_dy ** 2)
             distances.append(distance)
 
-    # Находим максимальное расстояние (это будет расстоянием от прямой до крайней точки)
     distance = max(distances)
 
-    # Создаем изображение для отражения
     reflected_image = np.zeros_like(image)
 
-    # Отражаем пиксели относительно заданной линии
     for y in range(image.shape[0]):
         for x in range(image.shape[1]):
-            # Находим вектор от точки до начальной точки прямой
             vector_x = x - x1
             vector_y = y - y1
-            # Находим скалярное произведение вектора и вектора, перпендикулярного прямой
             scalar_product = vector_x * perpendicular_dx + vector_y * perpendicular_dy
-            # Находим точку, отраженную относительно прямой
             reflected_x = x - 2 * scalar_product * perpendicular_dx / (perpendicular_dx ** 2 + perpendicular_dy ** 2)
             reflected_y = y - 2 * scalar_product * perpendicular_dy / (perpendicular_dx ** 2 + perpendicular_dy ** 2)
-            # Проверяем, чтобы новые координаты пикселя были в пределах изображения
             if 0 <= int(reflected_y) < image.shape[0] and 0 <= int(reflected_x) < image.shape[1]:
                 reflected_image[y, x] = image[int(reflected_y), int(reflected_x)]
 
@@ -105,7 +94,6 @@ def masks(mask, image, invert=False):
 
 
 def train_image(path_1, path_2, path_3):
-    # смотри colab "transformation_image.ipynb"
     mask_1 = cv2.imread(path_1, cv2.IMREAD_GRAYSCALE)
     mask_2 = cv2.imread(path_2, cv2.IMREAD_GRAYSCALE)
     image = cv2.imread(path_3)
@@ -114,7 +102,6 @@ def train_image(path_1, path_2, path_3):
     line_start = (x1, y1)
     line_end = (x2, y2)
 
-    # Отражаем изображение относительно заданной линии
     reflected_image = reflect_image(image, line_start, line_end)
 
     cut_image = masks(mask_1, image)
@@ -126,7 +113,6 @@ def train_image(path_1, path_2, path_3):
     line_start = (x1, y1)
     line_end = (x2, y2)
 
-    # Отражаем изображение относительно заданной линии
     reflected_image = reflect_image(stitched_image, line_start, line_end)
 
     cut_image = masks(mask_2, stitched_image)
@@ -140,11 +126,9 @@ def train_image(path_1, path_2, path_3):
 # input_folder = 'C:/Users/User/Desktop/category_2/test_with_obstacle/anomaly'
 # output_folder = 'C:/Users/User/Desktop/category_2/test_preparing/anomaly'
 #
-# # Проверка существования папки вывода и создание ее, если она не существует
 # if not os.path.exists(output_folder):
 #     os.makedirs(output_folder)
 
-# # Проход по всем файлам в папке ввода
 # for filename in tqdm(os.listdir(input_folder)):
 #     # Проверка, является ли файл изображением
 #     if filename.endswith('.jpg') or filename.endswith('.png'):
@@ -163,7 +147,6 @@ def train_image(path_1, path_2, path_3):
 #         cv2.imwrite(output_path, processed_image)
 
 
-# # Проход по всем файлам в папке ввода
 # for filename in tqdm(os.listdir(input_folder)):
 #     # Проверка, является ли файл изображением
 #     if filename.endswith('.jpg') or filename.endswith('.png'):
