@@ -104,23 +104,14 @@ def get_pdn_medium(out_channels=384, padding=False):
     )
 
 
-# ImageFolderWithoutTarget - это подкласс ImageFolder,
-# который используется для загрузки набора данных в формате изображения
-# без целевого таргета. Он имеет только один метод getitem,
-# который вызывает аналогичный метод у родительского класса ImageFolder,
-# а затем возвращает только образец без целевого таргета.
+
 class ImageFolderWithoutTarget(ImageFolder):
     def __getitem__(self, index):
         sample, target = super().__getitem__(index)
         return sample
 
 
-# ImageFolderWithPath - это также подкласс ImageFolder,
-# который используется для загрузки набора данных в формате изображения
-# с путем к файлу. Он также имеет метод getitem,
-# который получает путь и целевой таргет из samples,
-# вызывает метод getitem у родительского класса ImageFolder
-# и возвращает образец, целевой таргет и путь к файлу.
+
 class ImageFolderWithPath(ImageFolder):
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -128,13 +119,6 @@ class ImageFolderWithPath(ImageFolder):
         return sample, target, path
 
 
-# InfiniteDataloader - это функция,
-# которая принимает загрузчик данных loader
-# и возвращает объект-генератор.
-# Объект-генератор позволяет бесконечно итерироваться
-# по данным из загрузчика, путем обработки исключения StopIteration.
-# Если итератор заканчивается, создается новый итератор
-# и процесс повторяется.
 
 def InfiniteDataloader(loader):
     iterator = iter(loader)
