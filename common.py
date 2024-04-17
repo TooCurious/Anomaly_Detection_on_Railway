@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from torch import nn
 from torchvision.datasets import ImageFolder
 
